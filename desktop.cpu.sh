@@ -1,12 +1,17 @@
 #!/bin/bash
+set -x
 
 # Set NVIDIA options
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export LIBGL_ALWAYS_INDIRECT=0
 
+# Get VNC Display ID
+# This will only allow a max of 100 display sessions at once before we start running into potential issues
+NEXT_ID=$((SLURM_JOB_ID % 100))
+
 # Set VNC settings
-export DISPLAY=:2
-VNC_PORT=5902
+export DISPLAY=:${NEXT_ID}
+VNC_PORT=$((5900 + NEXT_ID))
 
 # Create XDG runtime environment
 USER_ID=$(whoami)
@@ -27,7 +32,7 @@ export GDMSESSION=""
 VNC_DIR="${HOME}/.vnc"
 
 # Start VNC Server
-vncserver ${DISPLAY} -geometry 1920x1080 -depth 24 -localhost no
+vncserver ${DISPLAY} -geometry 1920x1080 -depth 24 -localhost no & VNC_PID=$!
 #Xvnc :2 \
 #	-geometry 1920x1080 \
 #	-depth 24 \
@@ -35,4 +40,4 @@ vncserver ${DISPLAY} -geometry 1920x1080 -depth 24 -localhost no
 #	-rfbauth "$VNC_DIR/passwd" \
 #	-config "$VNC_DIR/xorg.conf.nvidia" \
 #	-SecurityTypes VncAuth &
-XVNC_PID=$!
+wait ${VNC_PID}

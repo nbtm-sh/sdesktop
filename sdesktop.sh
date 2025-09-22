@@ -1,5 +1,10 @@
 #!/bin/bash
 TEMP_VNC_PASSWD=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13)
+NEXT_ID=$((SLURM_JOB_ID % 100))
+
+# Set VNC settings
+VNC_PORT=$((5900 + NEXT_ID))
+echo Connect on $(hostname --long):${VNC_PORT}
 echo Password: ${TEMP_VNC_PASSWD}
 
 module purge

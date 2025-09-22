@@ -5,7 +5,8 @@ From: rockylinux:9
 	Author z3545907@ad.unsw.edu.au
 	Version 1.0
 	Description XFCE4 Container based on Rocky 9 
-
+%files
+	../desktop.cpu.sh /opt/sdesktop/desktop.cpu.sh
 %post
 	dnf update -y
 	
