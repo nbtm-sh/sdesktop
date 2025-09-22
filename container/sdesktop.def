@@ -1,0 +1,62 @@
+Bootstrap: docker
+From: rockylinux:9
+
+%labels
+	Author z3545907@ad.unsw.edu.au
+	Version 1.0
+	Description XFCE4 Container based on Rocky 9 
+
+%post
+	dnf update -y
+	
+	dnf install -y epel-release
+    dnf update -y
+
+	dnf install -y \
+		xorg-x11-server-utils \
+		xorg-x11-xauth \
+		xorg-x11-server-Xvfb \
+		mesa-libGL \
+		mesa-libGLU \
+		mesa-libGL-devel \
+		mesa-dri-drivers \
+		libglvnd-glx \
+		libglvnd-opengl \
+		libglvnd-devel
+
+	dnf install -y \
+		tigervnc-server \
+		tigervnc-server-module \
+		xorg-x11-fonts-Type1 \
+		xorg-x11-fonts-misc \
+		dejavu-sans-fonts \
+		dejavu-sans-mono-fonts
+	
+	dnf groupinstall -y "Xfce"
+
+	dnf install -y \
+		firefox \
+		thunar \
+		xfce4-terminal \
+		xfce4-panel \
+		xfce4-session \
+		xfce4-settings \
+		xfce4-appfinder \
+		xfwm4 \
+		xfdesktop \
+		mousepad \
+		ristretto
+
+	dnf groupinstall -y "Development Tools"
+	dnf install -y \
+		mesa-vulkan-drivers \
+		vulkan-tools \
+		glx-utils
+	
+	dnf install -y \
+		firefox \
+		mousepad
+	
+	dnf install -y https://github.com/VirtualGL/virtualgl/releases/download/3.1.3/VirtualGL-3.1.3.x86_64.rpm
+
+	dnf clean all
