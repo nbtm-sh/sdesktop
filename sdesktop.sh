@@ -22,14 +22,6 @@ if [ -z ${SLURM_GPUS_ON_NODE} ]; then
 	ARGS="--nv --bind /dev/dri:/dev/dri"
 fi
 # The best way to do this will be to actually install slurm within the container
-apptainer run ${ARGS} \
-	--bind /apps:/apps \
-   	--bind /data:/data \
-   	--bind /usr/bin/squeue:/usr/bin/squeue \
-	--bind /usr/bin/srun:/usr/bin/srun \
-	--bind /usr/bin/sbatch:/usr/bin/sbatch \
-	--bind /usr/bin/scancel:/usr/bin/scancel \
-	--bind /usr/bin/sreport:/usr/bin/sreport \
-	--bind /etc/slurm:/etc/slurm \
-	--bind /lib64/slurm:/lib64/slurm \
-	/apps/opt/sdesktop/0.0.1/sdesktop.sif "bash /apps/opt/sdesktop/0.0.1/desktop.sh"
+# Janky work around to weird bug where the script would only work correctly if it was ran from the bash CLI
+echo "/opt/sdesktop/desktop.cpu.sh && sleep infinity" | apptainer exec ${ARGS} ./container/sdesktop.sif bash 
+#apptainer exec ${ARGS} ./container/sdesktop.sif bash "/opt/sdesktop/desktop.cpu.sh"
