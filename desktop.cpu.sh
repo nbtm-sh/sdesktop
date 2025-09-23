@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 # Set NVIDIA options
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
@@ -32,7 +31,7 @@ export GDMSESSION=""
 VNC_DIR="${HOME}/.vnc"
 
 # Start VNC Server
-vncserver ${DISPLAY} -geometry 1920x1080 -depth 24 -localhost no & VNC_PID=$!
+vncserver ${DISPLAY} -geometry 1920x1080 -depth 24 -localhost no & VNC_PID=$! 2>&1 >> /dev/null
 #Xvnc :2 \
 #	-geometry 1920x1080 \
 #	-depth 24 \
